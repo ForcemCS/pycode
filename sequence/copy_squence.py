@@ -30,6 +30,7 @@ print(m1[0] is m2[0])
 
 #你是无法修改tuple的
 a = 1, 2, 3
+#进行切片操作
 b = a[:]
 
 print(b,type(b).__name__)
