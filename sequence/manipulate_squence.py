@@ -58,20 +58,13 @@ print(l)
 l.append((1, 2, 3))
 print(l)
 
+
 l = [1, 2, 3, 4]
 
+#将传入的可迭代对象中的每个元素逐个添加到列表末尾。
 l.extend(["py"])
 print(l)
 
-l = [1, 2, 3, 4]
-
-l.extend(["py"])
-print(l)
-
-l = [1, 2, 3, 4]
-
-l.extend("py")
-print(l)
 
 ###insert的使用,第二个元素后边插入ay
 l = [1, 2, 3, 4]
