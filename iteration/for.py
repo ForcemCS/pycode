@@ -5,6 +5,7 @@ for x in ['a b', 'b']:
     z = '=='.join(x)
     print(z)
     print(type(x).__name__, x)
+    print(y)
 print("Done")
 
 
@@ -28,7 +29,7 @@ print("Done-----------")
 data = [10, -20, 30, -1, -2]
 
 for t in enumerate(data):
-    print(t)
+    print(type(t).__name__,t)
 print("----------")
 
 
@@ -46,3 +47,4 @@ for  index, element in enumerate(data):
     if element < 0 :
         data[index] = 0 
 print(data)
+
