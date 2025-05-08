@@ -2,7 +2,7 @@
 #join 连接sequence(list tuple str rang())
 for x in ['a b', 'b']:
     y = x + x
-    z = '=='.join(x)
+    z = '=='.join(x) #'a b' 是一个sequence
     print(z)
     print(type(x).__name__, x)
     print(y)
