@@ -103,7 +103,30 @@ data = [
     [45, 60]
 ]
 
-start = 0 
-for row  in  data:
-        row.append('')
-        break
+
+for row_id,row_ele  in  enumerate(data):
+    if row_id == 0:
+        row_ele.append('')
+        continue
+print(data)
+
+data = [
+    [10, 20],
+    [20, 30],
+    [35, 50],
+    [45, 60]
+]
+
+
+for i in range(len(data)):
+    if i == 0:
+        data[i].append('')
+    elif data[i][0] == data[i-1][-2]:
+        data[i].append("same")
+    elif data[i][0] > data[i-1][-2]:
+        data[i].append('up')
+    else:
+        data[i].append('down')
+
+print(data)    
+

@@ -75,4 +75,12 @@ for  t  in enumerate(data):
     idx, el = t
     print(idx, el)
 
-    
+
+data = [
+    [10, 20],
+    [20, 30],
+    [35, 50],
+    [45, 60]
+]
+
+print(data[0][-1])
