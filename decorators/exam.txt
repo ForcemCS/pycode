@@ -1,0 +1,74 @@
+#测试1 写一个decorator ，用来打印函数运行所需要的时间
+#测试2
+#  1. 在我们的代码中，有几个函数会执行一些计算并返回数值结果，可能是浮点数、整数甚至是十进制。
+#  2. 实际上，我们要确保这些函数的所有结果都四舍五入到小数点后的某个位数（精度），并始终以浮点数形式返回。
+#  3. 但每次程序运行时，精度都可能发生变化。 此外，我们也不希望对每个函数都进行修改，因为在将来的某个时候，我们可能希望返回十进制对象，而不是浮点数，因此我们希望尽量减少为适应这些变化而需要修改的代码数量。
+#  4. 例如，我们可以在代码中使用一个变量来定义精度，并且可以在运行代码时随时更改：
+#     PRECISION = 2
+#  5. 假设我们已经定义了以下函数
+#  6. 编写一个名为 `normalize` 的装饰器，用于装饰这些函数，以确保返回结果始终是精度由某个全局变量 `PRECISION` 定义的 `float`。
+from decimal import Decimal
+
+def perc_diff(x, y):
+    try:
+        return (y-x) / x * 100
+    except ZeroDivisionError:
+        return 0
+    
+def sum_squares(*args):
+    return sum(x**2 for x in args)
+
+def avg(*args):
+    if len(args) == 0:
+        return 0
+    
+    numbers = [Decimal(x) for x in args]
+    sum_ = sum(numbers)
+    return sum_ / len(numbers)
+
+测试3
+1. 有时，我们会经常调用具有相同参数值的函数，但运行时间却很长。
+2. 如果这些函数是确定性的（即传递相同的参数将始终得到相同的返回值），那么我们就可以通过实施缓存机制来获得巨大的性能优势。
+3. 该函数模拟了一个长时间运行的函数：
+4. 正如您所看到的，该函数是确定性的--对于相同的参数，结果总是相同的。
+5. 使用 Python 的 LRU 缓存装饰器，可以在多次调用此函数并使用相同参数时帮助提高性能。
+6. 然后使用 `timeit` 测试性能的影响。
+from time import sleep
+
+def add(x, y):
+    sleep(2)
+    return x + y
+
+
+测试4
+1. 这是一个 “额外 ”练习。它是问题 2 的后续。
+2. 在测试2 中，我们创建了一个使用全局变量表示精度的装饰器。
+3. 在这里，我们更希望定义一个可以将精度作为参数的装饰器，也就是说，我们可以这样做：
+@normalize(2)
+def perc_diff(x, y):
+    try:
+        return (y-x) / x * 100
+    except ZeroDivisionError:
+        return 0
+    
+@normalize(4)
+def sum_squares(*args):
+    return sum(x**2 for x in args)
+
+@normalize(8)
+def avg(*args):
+    if len(args) == 0:
+        return 0
+    
+    numbers = [Decimal(x) for x in args]
+    sum_ = sum(numbers)
+    return sum_ / len(numbers)
+
+4. 友情提示：在这里，我们要做的不是直接编写一个装饰器函数，而是编写一个可以**创建**装饰器函数的函数，并在装饰器函数（它本身就是一个闭包）中获取精度。
+def normalize(precision):
+    def decorator(fn):
+        def inner(*args, **kwargs):
+            # precision passed to normalize is available here
+            return result
+        return inner
+    return decorator
