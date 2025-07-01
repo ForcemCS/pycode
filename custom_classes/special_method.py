@@ -78,9 +78,11 @@ class Circle:
         return f'Circle(radius={self.radius})'
     
     def __eq__(self, other):
-        if isinstance(other , Circle):
-            return self.radius == other.radius
-        return False
+        # if isinstance(other , Circle):
+        #     return self.radius == other.radius
+        # return False
+        
+        return isinstance(other, Circle)  and self.radius == other.radius
 
 a = Circle(10)
 b = Circle(10)
