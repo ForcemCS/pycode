@@ -16,6 +16,7 @@ print(a)
 ## code2 
 a = np.ones((10,2), dtype=np.uint8)
 print(a)
+print('--' * 10)
 
 ## code 3
 
@@ -23,7 +24,7 @@ a = np.full((2,3), 1.23, dtype=np.float64)
 print(a)
 
 ## code4
-
+## 单位阵
 a = np.eye(5, dtype=np.int64)
 print(a)
 
@@ -77,4 +78,16 @@ print(np.random.random((3,2)))
 
 ## code9
 np.random.seed(0)
+# [1, 20)之间生成20个随机数
 print(np.random.randint(1,10 ,20))
+
+
+## code 10
+
+from numpy import random as npr
+
+npr.seed(0)
+# 生成 10 x 2 的矩阵
+npr.randint(1, 7, (10, 2))
+
+
