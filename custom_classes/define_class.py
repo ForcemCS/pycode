@@ -19,6 +19,7 @@ class Persion:
     """
 
 ##code 1    
+## 实例化为一个对象
 p1 = Persion()
 print(p1)
 print(p1.__doc__)
