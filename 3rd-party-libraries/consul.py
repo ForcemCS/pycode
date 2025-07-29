@@ -4,8 +4,8 @@ import json
 import logging
 
 ssl_verify = False  # 注意: 使用 False 会跳过 SSL 验证，仅用于开发调试
-consul_token = "4994e44d-5c1e-f260-3cd0-4ee3033e1e4e"
-consul_addr = "https://10.10.0.203:31670"
+consul_token = "xxxx"
+consul_addr = "https://xxxxxxxx:316702"
 url = f"{consul_addr}/v1/catalog/services"
 
 headers = {
