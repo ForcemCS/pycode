@@ -1,59 +1,75 @@
-# 1. None 
-# 在 整个 Python 语言中被用来表示 “空” 或 “不存在”。
-# 你可以把它想象成一个空盒子。它不是数字0，也不是空字符串''，它就是纯粹的“无”。
-# 当一个变量还没有被赋值，或者一个函数没有返回值时，通常会用到 None。
-# 在数据序列（如列表）中，它也常被用作一个占位符，表示这个位置的数据是缺失的。
-# [1, 2, None, 4] 表示这个列表的第三个元素是缺失的。
+import pandas as pd
+import numpy as np
+import math
+
+## code1 
+print(float('NaN'),float('nan'))
+print(math.nan, np.nan)
+
+a = float('NaN')
+print(math.isnan(a))   # True
+
+## code 2 
+
+a = np.array([1, 2, np.nan, 3, math.nan])
+print(np.isnan(a))                           #[False False  True False  True]
+
+s = pd.Series([3.14, 2.5, None, 5])
+print(s)
 
 
-# 2. NaN (Not a Number)
-# 它不是用来表示“空”，而是用来表示一个 “未定义的”或“无法表示的”数学运算结果。
-#   例如：0 / 0 的结果是多少？在数学上是未定义的。在浮点数运算中，这个结果就是 NaN。
-#   无穷大减去无穷大 (inf - inf) 的结果也是 NaN。
-# 在 Python 中如何创建：
-#   float('nan'): 直接将字符串 'nan' 转换为浮点数。
-#   math.nan: Python 内置数学库 math 提供的 NaN 值。
-#   np.nan: 在数据科学领域，最常用的是 NumPy 库提供的 np.nan。
-
-# 那么，如何正确判断一个值是不是 NaN？
-# 必须使用专门的函数：
-#   math.isnan(): Python 自带的数学库函数。
-#   np.isnan(): NumPy 提供的函数，功能更强大，可以对整个数组进行判断。
-
-# 核心区别小结：
-
-# None 是一个通用的对象，表示“空”。
-# NaN 是一个特殊的浮点数，表示“不是一个数字”的计算结果。
+print(math.isnan(float('nan')))
 
 
-# 重要!!!：
-# 在代码中，你永远不应该使用 x == np.nan 来判断 x 是否为 NaN。正确的做法是 math.isnan(x) 或 np.isnan(x)。
+## code 3
+
+s = pd.Series(['aaa', 'bbb', None, 'ddd', np.nan], index=list('abcde'))
+print(s)
+print(pd.isnull(s))  # [False, False, True, False, True]
+print(s[pd.isnull(s)])
+print(s[~pd.isnull(s)])
+
+## 取出有意义的值
+print(s.dropna())
+
+##  code 4
+print(s.fillna('missing'))
+print(s.fillna(method = 'ffill', axis=0))  
+
+##  code 4 
+
+s = pd.Series([1, 2, None, 4, None, 7])
+print(s.interpolate(method='linear'))     #线性插值  [1.0 , 2.0 ....7.0]
 
 
-#3. Pandas 是如何处理 None 和 NaN 的 
-# Pandas 是如何处理 None 和 NaN 的
-# pd.Series([1, 2, None, np.nan])
-# Pandas 的处理流程：
-# Pandas 发现这个列表里有整数 1、2，也有缺失值 None 和 np.nan。
-# 为了保持数据类型的统一和计算效率，它需要找一个能同时容纳“数字”和“缺失标记”的类型。
-# 整数类型（int）无法表示 NaN。
-# 只有浮点数类型（float） 可以。因为 NaN 本身就是一个特殊的浮点数。
-# 因此，Pandas 做了两件事：
-# 类型提升 (Upcasting)：将所有的整数（如 1, 2）都转换成浮点数（1.0, 2.0）。
-# 统一缺失值：将 Python 的 None 也一并转换成浮点数标准的缺失值 NaN。
-# 最终结果：得到一个 dtype=float64 的 Series，其中所有的原始值都变成了浮点数，所有的缺失值都统一用 NaN 表示。
+## code 5
+
+d = {
+    'col1': {'row1': 1, 'row2': 10, 'row3': 100, 'row4': 1000, 'row5': 10000},
+    'col2': {'row1': 2, 'row2': None, 'row3': None, 'row4': 2000, 'row5': 20000},
+    'col3': {'row1': 3, 'row2': 30, 'row3': 300, 'row4': None, 'row5': 40000},
+    'col4': {'row1': 4, 'row2': 40, 'row3': 400, 'row4': 4000, 'row5': 40000}
+}
+
+## 将上边的数据进行翻转
+df = pd.DataFrame(d)
+print(df)
 
 
-#4. 在 Pandas 中检查缺失数据的终极方案 
-# Pandas 提供了一个完美的解决方案：
+#        col1     col2     col3   col4
+# row1      1      2.0      3.0      4
+# row2     10      NaN     30.0     40
+# row3    100      NaN    300.0    400
+# row4   1000   2000.0      NaN   4000
+# row5  10000  20000.0  40000.0  40000
 
-# pd.isnull() (或它的别名 pd.isna())
-# 这是一个通用函数：它能同时正确处理 None 和 NaN。
-# 工作原理：它会对 Series 或 DataFrame 中的每个元素进行检查：
-# 如果元素是 None，返回 True。
-# 如果元素是 NaN，返回 True。
-# 如果元素是其他任何值（数字、字符串等），返回 False。
-# 优点：你再也不用关心底层的缺失值到底是 None 还是 NaN 了。只要你想找缺失数据，用 pd.isnull() 就对了。
+print(df.interpolate(method='linear'))
 
-# pd.notnull() (或它的别名 pd.notna())
-# 这个函数和 isnull() 的功能完全相反。如果一个值不是缺失值（既不是 None 也不是 NaN），它就返回 True。
+#        col1     col2     col3   col4
+# row1      1      2.0      3.0      4
+# row2     10    668.0     30.0     40
+# row3    100   1334.0    300.0    400
+# row4   1000   2000.0  20150.0   4000
+# row5  10000  20000.0  40000.0  40000
+
+print(2668 / 2)   #1334.0
